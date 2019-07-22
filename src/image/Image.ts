@@ -29,11 +29,12 @@ export default class {
     //     });
     // });
     // TODO: Before each frame.
-    const { microWidth: CW, microHeight: CH } = this.settings;
+    const { microWidth: CW, microHeight: CH, resolution } = this.settings;
     let text = '';
-    for (let ch = 1; ch + CH < this.height; ch += CH) {
+    console.time('Gather chunks');
+    for (let ch = 1; ch + CH < this.height; ch += CH * resolution) {
       let lineText = '';
-      for (let cw = 1; cw < this.width; cw += CW) {
+      for (let cw = 1; cw < this.width; cw += CW * resolution) {
         // Chunk
         const chars = new Chars(this.settings, characters);
         for (let y = ch; y < ch + CH; y++) {
@@ -47,6 +48,7 @@ export default class {
       }
       text += lineText + '\n';
     }
+    console.timeEnd('Gather chunks');
     const canvas = document.createElement('canvas');
     canvas.getContext('2d').putImageData(this.pixels, 0, 0);
     document.body.appendChild(canvas);
@@ -55,6 +57,20 @@ export default class {
 
   draw() {
     this.ctx.drawImage(this.image, 0, 0);
+  }
+
+  updateCanvas(data: ImageData) {
+    this.ctx.putImageData(data, 0, 0);
+  }
+
+  grayscale() {
+    const { data } = this.pixels;
+    for (let i = 0; i < data.length; i += 4) {
+      const luma = data[i] * 0.2126 + data[i + 1] * 0.7152 + data[i + 2] * 0.0722;
+
+      data[i] = data[i + 1] = data[i + 2] = luma;
+      data[i + 3] = data[i + 3];
+    }
   }
 
   updateData() {

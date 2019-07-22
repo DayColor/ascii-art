@@ -7,4 +7,6 @@ export default class {
   microHeight = 7;
   microPadding = 1;
   fontGamma = 1.0;
+  previewHeight = 7;
+  resolution = 1;
 }

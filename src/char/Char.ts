@@ -3,7 +3,7 @@ import Canvas from '../canvas/Canvas';
 
 const enum Color {
   outline = '#fff',
-  background = '#2d2d2d',
+  background = '#232323',
   foreground = '#fff'
 }
 

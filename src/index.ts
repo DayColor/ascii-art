@@ -2,19 +2,23 @@ import Image from './image/Image';
 import Chars from './char/Chars';
 import Settings from './Settings';
 
-const canvas: HTMLCanvasElement = document.querySelector('canvas.main-canvas');
-const img: HTMLImageElement = document.querySelector('img');
-
 const settings = new Settings();
 
-const image = new Image(settings, canvas, img);
+const canvas: HTMLCanvasElement = document.querySelector('canvas.main-canvas');
+const img: HTMLImageElement = document.querySelector('img');
+document.querySelector('pre').style.fontSize = `${settings.previewHeight}px`;
+
+canvas.width = img.width;
+canvas.height = img.height;
 
 window.onload = () => {
-
   const chars = new Chars(settings);
   chars.allChars();
 
+  const image = new Image(settings, canvas, img);
   image.draw();
   image.updateData();
-  console.log(image.createChunks(chars.charPixels));
+  image.grayscale();
+  image.updateCanvas(image.pixels);
+  image.createChunks(chars.charPixels);
 };
