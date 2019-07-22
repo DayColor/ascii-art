@@ -22,7 +22,7 @@ node_modules
 .idea
 
 # Libs
-lib
+dist
 flow-typed
 
 # npm package lock
